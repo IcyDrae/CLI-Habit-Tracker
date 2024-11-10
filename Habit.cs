@@ -1,6 +1,8 @@
 ﻿/*
 This is the data structure that represents a habit.
 */
+using System.Text.Json;
+
 namespace HabitTracker
 {
     public class Habit
@@ -36,5 +38,18 @@ namespace HabitTracker
                 this.Name = Name;
             }
         }
+
+        /*public async void CreateJSONFile()
+        {
+            *//*Habit HabitData = new Habit
+            {
+                Name = 
+            };*//*
+
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string fileName = "WeatherForecast.json";
+            await using FileStream createStream = File.Create(fileName);
+            await JsonSerializer.SerializeAsync(createStream, HabitData, options);
+        }*/
     }
 }

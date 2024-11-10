@@ -3,6 +3,7 @@ This class is where everything comes together, the menu is built with the
 necessary options and submenus...continue
 */
 using HabitTracker.InteractiveMenu;
+using HabitTracker.File;
 
 namespace HabitTracker
 {
@@ -37,10 +38,14 @@ namespace HabitTracker
         public void Run()
         {
             this.TestAddHabits();
+
+            Json Json = new Json();
+            Json.CreateFile(this.HabitsList);
+
             this.BuildMenu();
         }
 
-        private void TestAddHabits()
+        private async void TestAddHabits()
         {
             Habit Habit1 = new Habit("Train every day");
             Habit Habit2 = new Habit("Stretch every day");
