@@ -1,0 +1,62 @@
+﻿Name: CLI Habit Tracker
+
+Define Core Features:
+    - Add New Habits: Users can add habits they want to track, like
+    "Exercise" or "Read 30 Minutes."
+    - Track Daily Completion: Each day, users mark whether they completed
+    each habit.
+    - View Streaks: Show how many consecutive days a user has maintained a habit,
+    ideally with some basic visual representation.
+
+Data Structure:
+    - Create a data structure for each habit that stores:
+        - The name of the habit.
+        - The streak count.
+        - A record of daily completions, like using dates as keys.
+    - Store the list of habits in a file (e.g., JSON or XML) to save and load each time the app runs.
+
+Functional Logic:
+    - Implement functions to:
+        - Add and remove habits.
+        - Update daily habit completion.
+        - Calculate the streak by checking consecutive completion days.
+    - Display habits with a streak visualization, like stars or dashes to represent each day in the streak.
+
+Visual Streak Representation:
+    - Use simple symbols (e.g., “*” or “✓”) to represent each day completed in the streak.
+    - Let the console display streaks in a visually clean way,
+    perhaps grouping by weekly progress or showing the last 30 days of activity.
+
+Basic Interface:
+    - Command options for users to add, complete, and view habits, with easy navigation.
+    - You could use a simple menu system
+    (e.g., 1. Add Habit, 2. Mark Habit Completed, 3. View Streaks) to make it user-friendly.
+
+Additional Ideas (Optional):
+    - Include habit summaries for the month.
+    - Add a motivational message for streak milestones.
+    - Track overall consistency percentage for each habit.
+
+This setup keeps it simple but effective, providing both utility and some light console visuals!
+
+What it does: CLI Habit Tracker with Visual Streaks
+
+Why: I really like the idea
+
+Deadline: Friday, 1 November 2024
+Started on: Tuesday, 29 October 2024. Hopefully I can do it in those three days.
+
+Features:
+	- Add New Habits
+    - Track Daily Completion
+    - View Streaks
+
+Tasks:
+    [X] Create a menu
+	[X] Add New Habits
+    [] Track Daily Completion
+    [] View Streaks
+
+
+
+
