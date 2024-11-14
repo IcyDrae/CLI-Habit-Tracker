@@ -43,9 +43,6 @@ What it does: CLI Habit Tracker with Visual Streaks
 
 Why: I really like the idea
 
-Deadline: Friday, 1 November 2024
-Started on: Tuesday, 29 October 2024. Hopefully I can do it in those three days.
-
 Features:
 	- Add New Habits
     - Track Daily Completion
@@ -54,8 +51,10 @@ Features:
 Tasks:
     [X] Create a menu
 	[X] Add New Habits
-    [] Track Daily Completion
-    [] View Streaks
+    [X] Edit habit
+    [X] View Streaks
+    [X] store habits in a JSON file in order to maintain state
+    [doing] Track Daily Completion inside the JSON file
 
 
 

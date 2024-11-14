@@ -88,6 +88,7 @@ namespace HabitTracker.InteractiveMenu
             }
 
             Console.WriteLine("\nPress Backspace to go back, Escape to exit.");
+            Console.WriteLine("Enter Y to mark as done.");
         }
 
         public void Exit()

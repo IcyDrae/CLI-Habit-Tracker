@@ -37,20 +37,22 @@ namespace HabitTracker
 
         public void Run()
         {
+            Json Json = new Json();
+            Json.Create();
+
             this.TestAddHabits();
 
-            Json Json = new Json();
-            Json.CreateFile(this.HabitsList);
+            Json.InsertHabits(this.HabitsList);
 
             this.BuildMenu();
         }
 
         private async void TestAddHabits()
         {
-            Habit Habit1 = new Habit("Train every day");
-            Habit Habit2 = new Habit("Stretch every day");
-            Habit Habit3 = new Habit("Code every day");
-            Habit Habit4 = new Habit("Read a book");
+            Habit Habit1 = new Habit("Train every day", DateTime.Now);
+            Habit Habit2 = new Habit("Stretch every day", DateTime.Now);
+            Habit Habit3 = new Habit("Code every day", DateTime.Now);
+            Habit Habit4 = new Habit("Read a book", DateTime.Now);
 
             this.HabitsList.Add(Habit1);
             this.HabitsList.Add(Habit2);
@@ -75,7 +77,7 @@ namespace HabitTracker
                     Console.WriteLine("That habit already exists. Please create another one.");
                 } else
                 {
-                    Habit Habit = new Habit(Name);
+                    Habit Habit = new Habit(Name, DateTime.Now);
                     this.HabitsList.Add(Habit);
 
                     Console.WriteLine($"Added: {Habit.GetModifiedName()}");
@@ -90,20 +92,23 @@ namespace HabitTracker
 
         private void ShowAllHabits()
         {
-            if (HabitsList.Count > 0)
+            Json Json = new Json();
+            List<Habit> HabitsFromFile = Json.GetAllHabits();
+
+            if (HabitsFromFile.Count > 0)
             {
                 HabitsListMenu.Options.Clear();
                 int PositionIndex = 1;
 
-                foreach (Habit Habit in this.HabitsList)
+                foreach (Habit Habit in HabitsFromFile)
                 {
                     HabitsListMenu.Options.Add(
                         new Option(
-                            $"{PositionIndex}) {Habit.GetModifiedName()}",
-                            () => this.EditHabit(Habit))
+                            $"{PositionIndex}) {Habit.GetModifiedName()}" +
+                            $"\n\tCreated on: {Habit.GetCreatedOn()}" +
+                            $"\n\tStreak: {Habit.GetStreak()}" +
+                            $"\n\tUpdated on: {Habit.GetUpdatedOn()}")
                     );
-
-                    Console.WriteLine($"{PositionIndex}) {Habit.GetModifiedName()}");
 
                     PositionIndex++;
                 }
@@ -125,14 +130,18 @@ namespace HabitTracker
 
         private void EditHabitMenu()
         {
-            if (HabitsList.Count > 0)
+            Json Json = new Json();
+            List<Habit> HabitsFromFile = Json.GetAllHabits();
+
+            if (HabitsFromFile.Count > 0)
             {
                 EditHabitSubMenu.Options.Clear();
                 int PositionIndex = 1;
 
-                foreach (Habit Habit in HabitsList)
+                foreach (Habit Habit in HabitsFromFile)
                 {
-                    EditHabitSubMenu.Options.Add(new Option($"{PositionIndex}) {Habit.GetModifiedName()}", () => EditHabit(Habit)));
+                    EditHabitSubMenu.Options.Add(new Option(
+                        $"{PositionIndex}) {Habit.GetModifiedName()}", () => EditHabit(Habit)));
                 
                     PositionIndex++;
                 }
@@ -155,16 +164,51 @@ namespace HabitTracker
             Console.WriteLine($"Editing: {Habit.GetName()}");
             Console.Write("Enter new name: ");
 
+            string OldHabit = Habit.GetName();
+            Json Json = new Json();
+
             var NewName = Console.ReadLine();
             if (!string.IsNullOrEmpty(NewName))
             {
                 Habit.SetName(NewName);
+                Habit.SetUpdatedOn(DateTime.Now);
                 Console.WriteLine($"Habit updated to: {NewName}");
             }
             else
             {
                 Console.WriteLine("Invalid name. Habit not updated.");
             }
+
+            Console.Write("Mark as done? ");
+            string MarkAsDone = Console.ReadLine();
+            if (!string.IsNullOrEmpty(MarkAsDone) && MarkAsDone.Equals("Y"))
+            {
+                bool HasDayPassed = DateTime.Now >= Habit.GetUpdatedOn().AddHours(24);
+
+                if (Habit.GetStreak() == 0 || HasDayPassed)
+                {
+                    Habit.SetStreak(Habit.GetStreak() + 1);
+                    Habit.SetUpdatedOn(DateTime.Now);
+                    Console.WriteLine($"Marked as done: {Habit.GetName()}. Check back in again tomorrow!");
+                }
+                else if (!HasDayPassed)
+                {
+                    Console.WriteLine("You cannot mark a habit as done before 24 hours have passed. Please " +
+                        "try again tomorrow.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Habit not updated.");
+            }
+
+            if (!string.IsNullOrEmpty(NewName) ||
+                (!string.IsNullOrEmpty(MarkAsDone) && MarkAsDone.Equals("Y")))
+            {
+                Json.UpdateHabit(OldHabit, Habit);
+            }
+
+            Console.WriteLine("Press ENTER to continue.");
             Console.ReadKey();
         }
     }
