@@ -33,7 +33,7 @@ Register the executable in your path or create a symlink or an alias, and you ca
 On the first run the app will create a JSON file called /HabitTracker.json/ on the user's desktop. This file will be used to manage the habits.
 
 * How/where to download
-Over at the releases page
+Over at the [[./bin/Release/net8.0/]] directory.
 
 * Any modifications needed to be made to files/folders
 Change the file mode to executable. On Linux, this is done by the following command:
