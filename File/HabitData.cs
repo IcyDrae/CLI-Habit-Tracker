@@ -11,6 +11,8 @@ namespace HabitTracker.File
 
         public DateTime UpdatedOn { get; set; }
 
-        public int Streak { get; set; }
+        public List<Streak> Streak { get; set; }
+
+        public int LastStreak { get; set; }
     }
 }

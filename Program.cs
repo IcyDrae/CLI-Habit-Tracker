@@ -12,7 +12,7 @@
 
         static void SetOutputEncodingForEmojis()
         {
-            Console.OutputEncoding = System.Text.Encoding.Unicode;
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
         }
     }
 }

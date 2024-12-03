@@ -3,24 +3,28 @@ This class is used to create and maintain a JSON file, which the
 app uses to maintain state.
 */
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace HabitTracker.File
 {
     public class Json
     {
-        private string Path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\HabitTracker.json";
+        private readonly string Path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "HabitTracker.json");
 
-        private JsonSerializerOptions Options = new JsonSerializerOptions
+        private readonly JsonSerializerOptions Options = new JsonSerializerOptions
         {
             WriteIndented = true
         };
 
         public async void Create()
         {
-            await using FileStream CreateStream = System.IO.File.Create(Path);
-            List<HabitData> HabitDataList = new List<HabitData>();
+            if (!System.IO.File.Exists(Path))
+            {
+                await using FileStream CreateStream = System.IO.File.Create(Path);
+                List<HabitData> HabitDataList = new List<HabitData>();
 
-            await JsonSerializer.SerializeAsync(CreateStream, HabitDataList, Options);
+                await JsonSerializer.SerializeAsync(CreateStream, HabitDataList, Options);
+            }
         }
 
         public async void InsertHabits(List<Habit> Habits)
@@ -37,7 +41,8 @@ namespace HabitTracker.File
                         Name = Habit.GetName(),
                         CreatedOn = Habit.GetCreatedOn(),
                         UpdatedOn = Habit.GetUpdatedOn(),
-                        Streak = Habit.GetStreak()
+                        Streak = Habit.GetStreak(),
+                        LastStreak = Habit.GetLastStreak()
                     });
                 }
 
@@ -56,7 +61,14 @@ namespace HabitTracker.File
 
                 foreach (HabitData HabitData in Contents)
                 {
-                    Habit Habit = new Habit(HabitData.Name, HabitData.CreatedOn, HabitData.Streak);
+                    List<Streak> Streaks = HabitData.Streak;
+
+                    Habit Habit = new Habit(HabitData.Name,
+                                            HabitData.CreatedOn,
+                                            Streaks.Last().GetValue(),
+                                            HabitData.LastStreak);
+
+                    Habit.Streak = Streaks;
                     Habit.SetUpdatedOn(HabitData.UpdatedOn);
                     Result.Add(Habit);
                 }
@@ -67,30 +79,28 @@ namespace HabitTracker.File
             return new List<Habit>();
         }
 
-        public Habit GetHabit(string Name)
-        {
+        public async void AddNewHabit(Habit Habit) {
             if (System.IO.File.Exists(Path))
             {
-                List<HabitData>? HabitDataList = new List<HabitData>();
-                using FileStream LocalFile = System.IO.File.Open(Path, FileMode.Open, FileAccess.Read);
-                List<HabitData>? Contents = JsonSerializer.Deserialize<List<HabitData>>(LocalFile);
+                using FileStream ReadStream = System.IO.File.Open(Path, FileMode.Open, FileAccess.Read);
+                List<HabitData>? Contents = await JsonSerializer.DeserializeAsync<List<HabitData>>(ReadStream);
+                ReadStream.Close();
 
-                HabitData? Result = HabitDataList.Find((HabitData) =>
+                Contents.Add(new HabitData
                 {
-                    return HabitData.Name.Equals(Name);
+                    Name = Habit.GetName(),
+                    CreatedOn = Habit.GetCreatedOn(),
+                    UpdatedOn = Habit.GetUpdatedOn(),
+                    Streak = Habit.GetStreak(),
+                    LastStreak = Habit.GetLastStreak()
                 });
 
-                return new Habit(
-                    Result.Name,
-                    Result.CreatedOn,
-                    Result.Streak
-                );
+                using FileStream WriteStream = System.IO.File.Open(Path, FileMode.Create, FileAccess.Write);
+                await JsonSerializer.SerializeAsync(WriteStream, Contents, Options);
             }
-
-            return new Habit("", DateTime.Now);
         }
 
-        public async void UpdateHabit(string OldHabit, Habit NewHabit)
+        public async void MarkAsDone(Habit Habit)
         {
             if (System.IO.File.Exists(Path))
             {
@@ -100,12 +110,53 @@ namespace HabitTracker.File
 
                 HabitData? Result = Contents.Find((HabitData) =>
                 {
-                    return HabitData.Name == OldHabit;
+                    return HabitData.Name == Habit.GetName();
+                });
+
+                Result.Streak.Add(Habit.GetStreak().Last());
+                Result.LastStreak = Habit.GetLastStreak();
+                Result.UpdatedOn = Habit.GetUpdatedOn();
+
+                using FileStream WriteStream = System.IO.File.Open(Path, FileMode.Create, FileAccess.Write);
+                await JsonSerializer.SerializeAsync(WriteStream, Contents, Options);
+            }
+        }
+
+        public async void UpdateHabit(string OldName, Habit NewHabit)
+        {
+            if (System.IO.File.Exists(Path))
+            {
+                using FileStream ReadStream = System.IO.File.Open(Path, FileMode.Open, FileAccess.Read);
+                List<HabitData>? Contents = await JsonSerializer.DeserializeAsync<List<HabitData>>(ReadStream);
+                ReadStream.Close();
+
+                HabitData? Result = Contents.Find((HabitData) =>
+                {
+                    return HabitData.Name == OldName;
                 });
 
                 Result.Name = NewHabit.GetName();
                 Result.UpdatedOn = NewHabit.GetUpdatedOn();
-                Result.Streak = NewHabit.GetStreak();
+
+                using FileStream WriteStream = System.IO.File.Open(Path, FileMode.Create, FileAccess.Write);
+                await JsonSerializer.SerializeAsync(WriteStream, Contents, Options);
+            }
+        }
+
+        public async void DeleteHabit(Habit Habit)
+        {
+            if (System.IO.File.Exists(Path))
+            {
+                using FileStream ReadStream = System.IO.File.Open(Path, FileMode.Open, FileAccess.Read);
+                List<HabitData>? Contents = await JsonSerializer.DeserializeAsync<List<HabitData>>(ReadStream);
+                ReadStream.Close();
+
+                HabitData? Result = Contents.Find((HabitData) =>
+                {
+                    return HabitData.Name == Habit.GetName();
+                });
+
+                Contents.Remove(Result);
 
                 using FileStream WriteStream = System.IO.File.Open(Path, FileMode.Create, FileAccess.Write);
                 await JsonSerializer.SerializeAsync(WriteStream, Contents, Options);

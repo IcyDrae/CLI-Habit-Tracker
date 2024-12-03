@@ -1,0 +1,47 @@
+*CLI Habit Tracker*
+
+* Description
+- Add New Habits: Users can add habits they want to track, like "Exercise" or "Read 30 Minutes."
+- Track Daily Completion: Each day, users mark whether they completed each habit.
+- View Streaks: Show how many consecutive days a user has maintained a habit, with visual representation.
+- Maintain your habits and or export your data with a JSON file.
+
+*Main menu*
+
+[[file:Assets/001-Screenshot_Home.png]]
+
+*Show all habits*
+
+[[file:Assets/002-Screenshot_ShowAll.png]]
+
+*Show habit timeline*
+
+[[file:Assets/002-01-Screenshot_ShowTimeline.png]]
+
+* Getting Started
+This software is built in self contained form and distributed as an executable. .NET is not required to run it. You should just pick the download for your system and run the executable file from the terminal.
+
+Supported systems:
+
+- linux-x64
+- osx-x64
+- win-x64
+
+* Installing
+Register the executable in your path or create a symlink or an alias, and you can use the app.
+
+On the first run the app will create a JSON file called /HabitTracker.json/ on the user's desktop. This file will be used to manage the habits.
+
+* How/where to download
+Over at the releases page
+
+* Any modifications needed to be made to files/folders
+Change the file mode to executable. On Linux, this is done by the following command:
+
+#+begin_src bash
+chmod +x ./HabitTracker
+#+end_src
+
+* License
+This project is licensed under the GNU GENERAL PUBLIC LICENSE Version 3 License - see the LICENSE.md file for details
+

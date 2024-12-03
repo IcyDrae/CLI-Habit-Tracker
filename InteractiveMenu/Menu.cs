@@ -59,7 +59,7 @@ namespace HabitTracker.InteractiveMenu
                     if (Stack.Count > 0)
                     {
                         CurrentMenu = Stack.Pop();
-                        CurrentMenu.Index = 0;
+                        //CurrentMenu.Index = 0;
                     }
                 }
                 else if (Key == ConsoleKey.Escape)

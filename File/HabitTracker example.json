@@ -1,22 +1,50 @@
 [
   {
-    "Name": "Train every day",
-    "CreatedOn": "2024-11-12T02:21:42.7765497+01:00",
-    "Streak": 0
+    "Name": "Training",
+    "CreatedOn": "2024-11-26T08:51:04.7506008+01:00",
+    "UpdatedOn": "2024-11-29T06:50:23.6278463+01:00",
+    "Streak": [
+      {
+        "Value": 0,
+        "MarkedOn": "2024-11-26T08:51:04.7691905+01:00"
+      }
+    ],
+    "LastStreak": 0
   },
   {
-    "Name": "Stretch every day",
-    "CreatedOn": "2024-11-12T02:21:42.785137+01:00",
-    "Streak": 0
+    "Name": "Stretching",
+    "CreatedOn": "2024-11-26T08:51:04.7692428+01:00",
+    "UpdatedOn": "2024-11-26T08:51:04.7692435+01:00",
+    "Streak": [
+      {
+        "Value": 0,
+        "MarkedOn": "2024-11-26T08:51:04.7692432+01:00"
+      }
+    ],
+    "LastStreak": 0
   },
   {
-    "Name": "Code every day",
-    "CreatedOn": "2024-11-12T02:21:42.7851386+01:00",
-    "Streak": 0
+    "Name": "Coding",
+    "CreatedOn": "2024-11-26T08:51:04.7692436+01:00",
+    "UpdatedOn": "2024-11-26T08:51:04.769244+01:00",
+    "Streak": [
+      {
+        "Value": 0,
+        "MarkedOn": "2024-11-26T08:51:04.7692438+01:00"
+      }
+    ],
+    "LastStreak": 0
   },
   {
-    "Name": "Read a book",
-    "CreatedOn": "2024-11-12T02:21:42.7851388+01:00",
-    "Streak": 0
+    "Name": "Reading",
+    "CreatedOn": "2024-11-26T08:51:04.7692441+01:00",
+    "UpdatedOn": "2024-11-26T08:51:04.7692445+01:00",
+    "Streak": [
+      {
+        "Value": 0,
+        "MarkedOn": "2024-11-26T08:51:04.7692443+01:00"
+      }
+    ],
+    "LastStreak": 0
   }
 ]
