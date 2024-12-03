@@ -28,6 +28,8 @@ Supported systems:
 - win-x64
 
 * Installing
+Run the file /HabitTracker/.
+
 Register the executable in your path or create a symlink or an alias, and you can use the app.
 
 On the first run the app will create a JSON file called /HabitTracker.json/ on the user's desktop. This file will be used to manage the habits.
